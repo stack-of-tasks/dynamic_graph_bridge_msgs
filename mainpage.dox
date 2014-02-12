@@ -1,0 +1,8 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\b dynamic_graph_bridge_msgs provides messages and types for dynamic_graph_bridge
+package.
+
+*/
