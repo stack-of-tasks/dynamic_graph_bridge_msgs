@@ -12,8 +12,9 @@ include(cmake/base.cmake)
 include(cmake/ros.cmake)
 include(cmake/GNUInstallDirs.cmake)
 
-SETUP_PROJECT()
+cmake_policy(SET CMP0007 OLD)
 
+SETUP_PROJECT()
 #List to make rest of code more readable
 set( MESSAGE_DEPENDENCIES std_msgs )
 
