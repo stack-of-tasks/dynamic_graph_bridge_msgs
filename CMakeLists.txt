@@ -1,12 +1,26 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(dynamic_graph_bridge_msgs)
 
-set(ROS_BUILD_TYPE RelWithDebInfo)
+#List to make rest of code more readable
+set( MESSAGE_DEPENDENCIES std_msgs )
 
-rosbuild_init()
+#Declare build dependencies
+find_package(catkin REQUIRED
+COMPONENTS
+message_generation
+${MESSAGE_DEPENDENCIES} )
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+#Add message files
+add_message_files(DIRECTORY msg FILES Matrix.msg Vector.msg)
 
-rosbuild_genmsg()
-rosbuild_gensrv()
+#Add service files
+add_service_files(DIRECTORY srv
+FILES
+RunCommand.srv
+RunPythonFile.srv)
+
+#And now generate the messages
+generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
+
+# Generate catkin/pkg-config import information
+catkin_package( CATKIN_DEPENDS message_runtime ${MESSAGE_DEPENDENCIES} )
