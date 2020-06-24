@@ -1,42 +1,30 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(dynamic_graph_bridge_msgs)
+cmake_minimum_required(VERSION 3.1)
 
-## LAAS cmake submodule part
-set(PROJECT_DESCRIPTION "Dynamic graph bridge msgs ")
+set(PROJECT_ORG stack-of-tasks)
 set(PROJECT_NAME dynamic_graph_bridge_msgs)
-set(PROJECT_URL "")
+set(PROJECT_DESCRIPTION "Dynamic graph bridge msgs ")
+set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
 
-set(CXX_DISABLE_WERROR False)
 set(CUSTOM_HEADER_DIR dynamic_graph_bridge_msgs)
+set(PROJECT_USE_CMAKE_EXPORT TRUE)
+
 include(cmake/base.cmake)
-include(cmake/ros.cmake)
-include(cmake/GNUInstallDirs.cmake)
 
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+project(${PROJECT_NAME} ${PROJECT_ARGS})
 
-SETUP_PROJECT()
-#List to make rest of code more readable
-set( MESSAGE_DEPENDENCIES std_msgs )
+# Declare build dependencies
+find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 
-#Declare build dependencies
-find_package(catkin REQUIRED
-COMPONENTS
-message_generation
-${MESSAGE_DEPENDENCIES} )
-
-#Add message files
+# Add message files
 add_message_files(DIRECTORY msg FILES Matrix.msg Vector.msg)
 
-#Add service files
-add_service_files(DIRECTORY srv
-FILES
-RunCommand.srv
-RunPythonFile.srv)
+# Add service files
+add_service_files(DIRECTORY srv FILES RunCommand.srv RunPythonFile.srv)
 
-#And now generate the messages
+# And now generate the messages
 generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
 
-# Generate catkin/pkg-config import information
-catkin_package( CATKIN_DEPENDS message_runtime ${MESSAGE_DEPENDENCIES} )
-
-
-SETUP_PROJECT_FINALIZE()
+add_library(${PROJECT_NAME} INTERFACE)
+install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
+install(FILES package.xml DESTINATION share/${PROJECT_NAME})
