@@ -4,7 +4,7 @@
   <description>
     Dynamic graph bridge messages and services.
   </description>
-  <maintainer email="ostasse@laas.fr">Olivier Stasse</maintainer>
+  <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
   <author>Pierre Gergondet</author>
 
   <license>BSD</license>
