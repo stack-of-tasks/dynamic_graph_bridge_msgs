@@ -13,17 +13,30 @@ include(cmake/base.cmake)
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
-# Declare build dependencies
-find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
+if(DEFINED ENV{ROS_VERSION} )
 
-# Add message files
-add_message_files(DIRECTORY msg FILES Matrix.msg Vector.msg)
+  # ROS-1
+  if ($ENV{ROS_VERSION} EQUAL 1)
+    # Declare build dependencies
+    find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 
-# Add service files
-add_service_files(DIRECTORY srv FILES RunCommand.srv RunPythonFile.srv)
+    # Add message files
+    add_message_files(DIRECTORY msg FILES Matrix.msg Vector.msg)
 
-# And now generate the messages
-generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
+    # Add service files
+    add_service_files(DIRECTORY srv FILES RunCommand.srv RunPythonFile.srv)
+
+    # And now generate the messages
+    generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
+  endif()
+
+  # IF ROS2
+  if ($ENV{ROS_VERSION} EQUAL 2)
+    # Dependency to roscpp is also optional
+    add_project_dependency(ros)
+    find_package(ament_cmake REQUIRED)
+  endif()
+endif()
 
 add_library(${PROJECT_NAME} INTERFACE)
 install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
