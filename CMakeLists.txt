@@ -29,7 +29,10 @@ if(DEFINED ENV{ROS_VERSION} )
     add_message_files(DIRECTORY msg FILES Matrix.msg Vector.msg)
 
     # Add service files
-    add_service_files(DIRECTORY srv FILES RunCommand.srv RunPythonFile.srv)
+    add_service_files(
+        DIRECTORY srv
+        FILES RunCommand.srv RunPythonCommand.srv RunPythonFile.srv
+    )
 
     # And now generate the messages
     generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
@@ -67,6 +70,7 @@ if(DEFINED ENV{ROS_VERSION} )
       "msg/Matrix.msg"
       "msg/Vector.msg"
       "srv/RunCommand.srv"
+      "srv/RunPythonCommand.srv"
       "srv/RunPythonFile.srv"
       )
 
