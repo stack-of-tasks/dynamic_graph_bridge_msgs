@@ -19,3 +19,13 @@ command in the C++ embeded python interpreter.
 - `srv/RunPythonCommand.srv` is symbolic link to the `srv/RunCommand.srv` file.
 - `srv/RunPythonFile.srv`is service allowing the user to parse a full script
 inside the the C++ embeded python interpreter.
+
+# ROS1/2 build.
+
+The package is building the message for ROS1 or ROS2 dependending on the
+currently active environment.
+We use the `ROS_VERSION` environment variable in order to handle the different
+build.
+
+The ROS1 build is based on the `catkin` cmake module, and the ROS2 is based on
+`ament` cmake module.
