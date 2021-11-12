@@ -22,7 +22,6 @@ from dynamic_graph_bridge_msgs.srv import (
 class ServerNode(object):
 
     def __init__(self):
-        super().__init__()
         self._run_python_command_srv = rospy.Service(
             'run_python_command', RunPythonCommand, self._run_python_command)
 
