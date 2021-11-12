@@ -28,22 +28,21 @@ from dynamic_graph_bridge_msgs.srv import (
     RunPythonFile,
 )
 
+if is_launch_testing:
 
-@pytest.mark.rostest
-def generate_test_description():
-    # Normally, talker publishes on the 'chatter' topic and listener listens on the
-    # 'chatter' topic, but we want to show how to use remappings to munge the data so we
-    # will remap these topics when we launch the nodes and insert our own node that can
-    # change the data as it passes through
-    path_to_test = Path(__file__).resolve().parent
+    @pytest.mark.rostest
+    def generate_test_description():
+        # Normally, talker publishes on the 'chatter' topic and listener listens on the
+        # 'chatter' topic, but we want to show how to use remappings to munge the data so we
+        # will remap these topics when we launch the nodes and insert our own node that can
+        # change the data as it passes through
+        path_to_test = Path(__file__).resolve().parent
 
-    server_node = launch_ros.actions.Node(
-        executable=sys.executable,
-        arguments=[str(path_to_test / 'unit_test_node.py')],
-        additional_env={'PYTHONUNBUFFERED': '1'}
-    )
-
-    if is_launch_testing:
+        server_node = launch_ros.actions.Node(
+            executable=sys.executable,
+            arguments=[str(path_to_test / 'unit_test_node.py')],
+            additional_env={'PYTHONUNBUFFERED': '1'}
+        )
         return (
             launch.LaunchDescription([
                 server_node,
@@ -54,16 +53,32 @@ def generate_test_description():
                 'python_server_node': server_node
             },
         )
-    else:
+
+else: # is_launch_testing
+
+    @pytest.mark.rostest
+    def generate_test_description(ready_fn):
+        # Normally, talker publishes on the 'chatter' topic and listener listens on the
+        # 'chatter' topic, but we want to show how to use remappings to munge the data so we
+        # will remap these topics when we launch the nodes and insert our own node that can
+        # change the data as it passes through
+        path_to_test = Path(__file__).resolve().parent
+
+        server_node = launch_ros.actions.Node(
+            executable=sys.executable,
+            arguments=[str(path_to_test / 'unit_test_node.py')],
+            additional_env={'PYTHONUNBUFFERED': '1'}
+        )
         return (
             launch.LaunchDescription([
                 server_node,
+                # Start tests right away - no need to wait for anything in this example
+                launch.actions.OpaqueFunction(function=lambda context: ready_fn()),
             ]),
             {
                 'python_server_node': server_node
             },
         )
-
 
 
 class RunPythonCommandClient(Node):
