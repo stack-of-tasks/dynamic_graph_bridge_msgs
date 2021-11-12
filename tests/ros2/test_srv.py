@@ -15,7 +15,12 @@ from rclpy.node import Node
 import launch
 import launch_ros
 import launch_ros.actions
-import launch_testing.actions
+try:
+    import launch_testing.actions
+    is_launch_testing = True
+except ImportError:
+    is_launch_testing = False
+
 
 from dynamic_graph_bridge_msgs.srv import (
     RunPythonCommand,
@@ -38,16 +43,27 @@ def generate_test_description():
         additional_env={'PYTHONUNBUFFERED': '1'}
     )
 
-    return (
-        launch.LaunchDescription([
-            server_node,
-            # Start tests right away - no need to wait for anything
-            launch_testing.actions.ReadyToTest(),
-        ]),
-        {
-            'python_server_node': server_node
-        },
-    )
+    if is_launch_testing:
+        return (
+            launch.LaunchDescription([
+                server_node,
+                # Start tests right away - no need to wait for anything
+                launch_testing.actions.ReadyToTest(),
+            ]),
+            {
+                'python_server_node': server_node
+            },
+        )
+    else:
+        return (
+            launch.LaunchDescription([
+                server_node,
+            ]),
+            {
+                'python_server_node': server_node
+            },
+        )
+
 
 
 class RunPythonCommandClient(Node):
