@@ -2,9 +2,14 @@ name: Ubuntu20.04, ROS1 Continuous Integration
 
 on:
   push:
-    branches: [ master, devel ]
+    branches:
+    - mnaveau/ros2
+    - master
+    - devel
   pull_request:
-    branches: [ master, devel ]
+    branches:
+    - master
+    - devel
 
 env:
 
