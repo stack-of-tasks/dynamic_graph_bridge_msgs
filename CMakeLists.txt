@@ -20,8 +20,7 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 if(DEFINED ENV{ROS_VERSION} )
 
-  # ROS-1
-  if ($ENV{ROS_VERSION} EQUAL 1)
+  if ($ENV{ROS_VERSION} EQUAL 1) # if ROS1
     # Declare build dependencies
     find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 
@@ -42,26 +41,7 @@ if(DEFINED ENV{ROS_VERSION} )
     install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
     install(FILES package.xml DESTINATION share/${PROJECT_NAME})
 
-  endif()
-
-  # IF ROS2
-  if ($ENV{ROS_VERSION} EQUAL 2)
-    # Dependency to roscpp is also optional
-    cmake_policy(SET CMP0057 NEW)
-    # Default to C99
-    if(NOT CMAKE_C_STANDARD)
-      set(CMAKE_C_STANDARD 99)
-    endif()
-
-    # Default to C++14
-    if(NOT CMAKE_CXX_STANDARD)
-      set(CMAKE_CXX_STANDARD 14)
-    endif()
-
-    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-      add_compile_options(-Wall -Wextra -Wpedantic)
-    endif()
-
+  else() # if ROS2
     find_package(ament_cmake REQUIRED)
     find_package(ament_cmake_python REQUIRED)
     find_package(rosidl_default_generators REQUIRED)
@@ -71,13 +51,30 @@ if(DEFINED ENV{ROS_VERSION} )
       "srv/RunCommand.srv"
       "srv/RunPythonCommand.srv"
       "srv/RunPythonFile.srv"
-      )
-
-    #    install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
+    )
     install(FILES package.xml DESTINATION share/${PROJECT_NAME})
-
     ament_export_dependencies(rosidl_default_runtime)
     ament_package()
+  endif()
 
+  if(BUILD_TESTING)
+    include(CTest)
+    find_program(py_executable "python3")
+    if(py_executable)
+      if ($ENV{ROS_VERSION} EQUAL 1) # if ROS-1
+        message(WARNING "No unit tests: Fix PYTHONPATH for ROS1 build folder.")
+      else() # if ROS-2
+        add_test(
+          NAME test_${PROJECT_NAME}_python
+          COMMAND ${py_executable} -m pytest -v
+          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/ros2)
+        set_tests_properties(
+          test_${PROJECT_NAME}_python
+          PROPERTIES
+            ENVIRONMENT
+            "PYTHONPATH=${CMAKE_BINARY_DIR}/rosidl_generator_py/:${CMAKE_BINARY_DIR}:$ENV{PYTHONPATH}"
+        )
+      endif()
+    endif()
   endif()
 endif()
