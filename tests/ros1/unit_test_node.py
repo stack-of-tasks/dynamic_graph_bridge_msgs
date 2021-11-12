@@ -47,7 +47,7 @@ class ServerNode(object):
 
     def _run_python_file(self, request):
         response = RunPythonFileResponse()
-        response.result = os.path.exists(request.input)
+        response.result = str(os.path.exists(request.input))
         return response
 
 def main(args=None):
