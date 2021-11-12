@@ -1,6 +1,6 @@
 """
 license BSD 3-clause
-Copyright (c) 2020, New York University and Max Planck Gesellschaft
+Copyright (c) 2020, CNRS
 
 Unit-tests for the python API of the DynamicGraphManager
 """
@@ -96,7 +96,7 @@ class RunPythonFileClient(Node):
         self.future = self.cli.call_async(self.req)
 
 
-class TestRunPythonCommand(unittest.TestCase):
+class TestPythonServices(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Initialize the ROS context for the test node

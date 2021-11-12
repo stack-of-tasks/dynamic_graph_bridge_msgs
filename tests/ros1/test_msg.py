@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 """
 license BSD 3-clause
@@ -8,7 +7,7 @@ Unit-tests for the python API of the DynamicGraphManager
 """
 
 import unittest
-import rclpy
+import rostest
 import numpy as np
 
 from dynamic_graph_bridge_msgs.msg import Vector, Matrix
@@ -17,13 +16,11 @@ from dynamic_graph_bridge_msgs.msg import Vector, Matrix
 class TestMessages(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # Initialize the ROS context for the test node
-        rclpy.init()
+        pass
 
     @classmethod
     def tearDownClass(cls):
-        # Shutdown the ROS context
-        rclpy.shutdown()
+        pass
 
     def setUp(self):
         self.random_vector = np.random.rand(int(np.random.rand() * 10.0 + 1))
@@ -49,3 +46,7 @@ class TestMessages(unittest.TestCase):
 
         np.testing.assert_almost_equal(m.data, flat_m)
         self.assertEqual(m.width, width)
+
+
+if __name__ == '__main__':
+    rostest.rosrun('dynamic_graph_bridge_msgs', 'test_msg', TestMessages)

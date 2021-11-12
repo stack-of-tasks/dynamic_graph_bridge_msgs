@@ -62,7 +62,8 @@ if(DEFINED ENV{ROS_VERSION} )
     find_program(py_executable "python3")
     if(py_executable)
       if ($ENV{ROS_VERSION} EQUAL 1) # if ROS-1
-        message(WARNING "No unit tests: Fix PYTHONPATH for ROS1 build folder.")
+        find_package(rostest REQUIRED)
+        add_rostest(tests/ros1/unit_test_ros.test)
       else() # if ROS-2
         add_test(
           NAME test_${PROJECT_NAME}_python

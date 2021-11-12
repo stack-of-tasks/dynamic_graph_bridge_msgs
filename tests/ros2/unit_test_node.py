@@ -1,4 +1,8 @@
+#!/usr/bin/env python
 """python_service_server
+
+license BSD 3-clause
+Copyright (c) 2020, CNRS
 
 small server for running unit-test on the generated API of ROS2 services.
 """

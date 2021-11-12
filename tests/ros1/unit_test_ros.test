@@ -1,0 +1,5 @@
+<launch>
+ <test test-name="test_msg" pkg="dynamic_graph_bridge_msgs" type="test_msg.py" />
+ <test test-name="test_srv" pkg="dynamic_graph_bridge_msgs" type="test_srv.py" />
+ <node name="unit_test_node" pkg="dynamic_graph_bridge_msgs" type="unit_test_node.py" />
+</launch>

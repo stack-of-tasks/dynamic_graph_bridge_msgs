@@ -3,7 +3,6 @@ name: Ubuntu18.04, ROS2 Continuous Integration
 on:
   push:
     branches:
-    - mnaveau/ros2
     - master
     - devel
   pull_request:
