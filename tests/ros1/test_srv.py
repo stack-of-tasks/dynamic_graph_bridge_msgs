@@ -6,7 +6,7 @@ Copyright (c) 2020, CNRS
 Unit-tests for the python API of the DynamicGraphManager
 """
 
-from pathlib import Path
+import os
 import unittest
 import rostest
 import rospy
@@ -71,7 +71,7 @@ class TestServices(unittest.TestCase):
         try:
             client = rospy.ServiceProxy('run_python_file', RunPythonFile)
             request = RunPythonFileRequest()
-            request.input = str(Path(__file__).resolve())
+            request.input = os.path.abspath(__file__)
             response = client(request)
         except rospy.ServiceException as e:
             print("Service call failed: %s"%e)

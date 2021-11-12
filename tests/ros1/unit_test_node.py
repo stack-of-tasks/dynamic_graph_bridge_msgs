@@ -7,7 +7,7 @@ Copyright (c) 2020, CNRS
 small server for running unit-test on the generated API of ROS2 services.
 """
 
-from pathlib import Path
+import os
 import rospy
 from dynamic_graph_bridge_msgs.srv import (
     RunPythonCommand,
@@ -48,7 +48,7 @@ class ServerNode(object):
 
     def _run_python_file(self, request):
         response = RunPythonFileResponse()
-        response.result = str(Path(request.input).exists())
+        response.result = os.path.exists(request.input)
         return response
 
 def main(args=None):
