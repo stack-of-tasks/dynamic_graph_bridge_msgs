@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(PROJECT_ORG stack-of-tasks)
+set(PROJECT_NAME dynamic_graph_bridge_msgs)
+set(PROJECT_DESCRIPTION "Dynamic graph bridge msgs ")
+set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
+
 if(DEFINED ENV{ROS_VERSION} )
 
   if ($ENV{ROS_VERSION} EQUAL 1) # if ROS1
     # Here we use the jrl-cmakemodules to package things properly.
-    set(PROJECT_ORG stack-of-tasks)
-    set(PROJECT_NAME dynamic_graph_bridge_msgs)
-    set(PROJECT_DESCRIPTION "Dynamic graph bridge msgs ")
-    set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
-
     set(CUSTOM_HEADER_DIR dynamic_graph_bridge_msgs)
     if(DEFINED ENV{ROS_VERSION} )
       # ROS-1
