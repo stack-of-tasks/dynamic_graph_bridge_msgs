@@ -35,4 +35,3 @@ jobs:
         with:
           package-name: dynamic_graph_bridge_msgs
           target-ros2-distro: foxy
-          vcs-repo-file-url: /tmp/deps.repos
