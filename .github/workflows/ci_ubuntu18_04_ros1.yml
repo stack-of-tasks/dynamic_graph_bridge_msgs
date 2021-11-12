@@ -34,4 +34,4 @@ jobs:
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: dynamic_graph_bridge_msgs
-          target-ros2-distro: melodic
+          target-ros1-distro: melodic
