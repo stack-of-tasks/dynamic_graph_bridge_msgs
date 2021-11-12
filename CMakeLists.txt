@@ -1,26 +1,26 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(PROJECT_ORG stack-of-tasks)
-set(PROJECT_NAME dynamic_graph_bridge_msgs)
-set(PROJECT_DESCRIPTION "Dynamic graph bridge msgs ")
-set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
-
-set(CUSTOM_HEADER_DIR dynamic_graph_bridge_msgs)
-if(DEFINED ENV{ROS_VERSION} )
-  # ROS-1
-  if ($ENV{ROS_VERSION} EQUAL 1)
-    set(PROJECT_USE_CMAKE_EXPORT TRUE)
-  endif()
-endif()
-
-include(cmake/base.cmake)
-
-COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX C)
-project(${PROJECT_NAME} ${PROJECT_ARGS})
-
 if(DEFINED ENV{ROS_VERSION} )
 
   if ($ENV{ROS_VERSION} EQUAL 1) # if ROS1
+    # Here we use the jrl-cmakemodules to package things properly.
+    set(PROJECT_ORG stack-of-tasks)
+    set(PROJECT_NAME dynamic_graph_bridge_msgs)
+    set(PROJECT_DESCRIPTION "Dynamic graph bridge msgs ")
+    set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
+
+    set(CUSTOM_HEADER_DIR dynamic_graph_bridge_msgs)
+    if(DEFINED ENV{ROS_VERSION} )
+      # ROS-1
+      if ($ENV{ROS_VERSION} EQUAL 1)
+        set(PROJECT_USE_CMAKE_EXPORT TRUE)
+      endif()
+    endif()
+    include(cmake/base.cmake)
+
+    COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX C)
+    project(${PROJECT_NAME} ${PROJECT_ARGS})
+
     # Declare build dependencies
     find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 
@@ -42,6 +42,9 @@ if(DEFINED ENV{ROS_VERSION} )
     install(FILES package.xml DESTINATION share/${PROJECT_NAME})
 
   else() # if ROS2
+    # Here ament is doing things ok.
+    project(${PROJECT_NAME})
+
     find_package(ament_cmake REQUIRED)
     find_package(ament_cmake_python REQUIRED)
     find_package(rosidl_default_generators REQUIRED)
