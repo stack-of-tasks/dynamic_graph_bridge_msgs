@@ -1,6 +1,14 @@
 name: Ubuntu18.04, ROS1 Continuous Integration
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - master
+    - devel
+  pull_request:
+    branches:
+    - master
+    - devel
 
 env:
 
