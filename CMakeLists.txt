@@ -61,24 +61,24 @@ if(DEFINED ENV{ROS_VERSION} )
   endif()
 
   if(BUILD_TESTING)
-    include(CTest)
-    find_program(py_executable "python3")
-    if(py_executable)
-      if ($ENV{ROS_VERSION} EQUAL 1) # if ROS-1
-        find_package(rostest REQUIRED)
-        add_rostest(tests/ros1/unit_test_ros.test)
-      else() # if ROS-2
-        add_test(
-          NAME test_${PROJECT_NAME}_python
-          COMMAND ${py_executable} -m pytest -v
-          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/ros2)
-        set_tests_properties(
-          test_${PROJECT_NAME}_python
-          PROPERTIES
-            ENVIRONMENT
-            "PYTHONPATH=${CMAKE_BINARY_DIR}/rosidl_generator_py/:${CMAKE_BINARY_DIR}:$ENV{PYTHONPATH}"
-        )
-      endif()
+    if ($ENV{ROS_VERSION} EQUAL 1) # if ROS-1
+      find_package(rostest REQUIRED)
+      add_rostest(tests/ros1/unit_test_ros.test)
+    else() # if ROS-2
+      include(CTest)
+      include(cmake/python.cmake)
+      findpython()
+      add_test(
+        NAME test_${PROJECT_NAME}_python
+        COMMAND ${PYTHON_EXECUTABLE} -m pytest -v
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/ros2)
+      set_tests_properties(
+        test_${PROJECT_NAME}_python
+        PROPERTIES
+          ENVIRONMENT
+          "PYTHONPATH=${CMAKE_BINARY_DIR}/rosidl_generator_py/:${CMAKE_BINARY_DIR}:$ENV{PYTHONPATH}"
+      )
     endif()
-  endif()
+  endif() # BUILD_TESTING
+
 endif()
