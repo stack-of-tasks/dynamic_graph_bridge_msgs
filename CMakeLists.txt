@@ -38,7 +38,6 @@ if(ROS_VERSION EQUAL 1) # if ROS1
   add_library(${PROJECT_NAME} INTERFACE)
 
   install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
-  install(FILES package.xml DESTINATION share/${PROJECT_NAME})
 
 else() # if ROS2
   # Here ament is doing things ok.
@@ -54,10 +53,11 @@ else() # if ROS2
     "srv/RunPythonCommand.srv"
     "srv/RunPythonFile.srv"
   )
-  install(FILES package.xml DESTINATION share/${PROJECT_NAME})
   ament_export_dependencies(rosidl_default_runtime)
   ament_package()
 endif()
+
+install(FILES package.xml DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   if(ROS_VERSION EQUAL 1) # if ROS1
