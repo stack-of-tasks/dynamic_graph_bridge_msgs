@@ -20,17 +20,19 @@ from dynamic_graph_bridge_msgs.srv import (
 
 
 class ServerNode(object):
-
     def __init__(self):
         self._run_python_command_srv = rospy.Service(
-            'run_python_command', RunPythonCommand, self._run_python_command)
+            "run_python_command", RunPythonCommand, self._run_python_command
+        )
 
         self._run_command_srv = rospy.Service(
-            'run_command', RunCommand, self._run_command)
-        
+            "run_command", RunCommand, self._run_command
+        )
+
         self._run_python_file_srv = rospy.Service(
-            'run_python_file', RunPythonFile, self._run_python_file)
-    
+            "run_python_file", RunPythonFile, self._run_python_file
+        )
+
     def _run_python_command(self, request):
         response = RunPythonCommandResponse()
         response.result = request.input + "_result_python_cmd"
@@ -50,11 +52,12 @@ class ServerNode(object):
         response.result = str(os.path.exists(request.input))
         return response
 
+
 def main(args=None):
-    rospy.init_node('unit_test_node')
-    server = ServerNode()
+    rospy.init_node("unit_test_node")
+    ServerNode()
     rospy.spin()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

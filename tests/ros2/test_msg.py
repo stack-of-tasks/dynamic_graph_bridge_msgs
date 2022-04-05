@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 """
 license BSD 3-clause
@@ -27,8 +26,9 @@ class TestMessages(unittest.TestCase):
 
     def setUp(self):
         self.random_vector = np.random.rand(int(np.random.rand() * 10.0 + 1))
-        self.random_matrix = np.random.rand(int(np.random.rand() * 10.0 + 2),
-                                            int(np.random.rand() * 10.0 + 2))
+        self.random_matrix = np.random.rand(
+            int(np.random.rand() * 10.0 + 2), int(np.random.rand() * 10.0 + 2)
+        )
 
     def tearDown(self):
         pass

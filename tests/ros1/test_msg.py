@@ -24,8 +24,9 @@ class TestMessages(unittest.TestCase):
 
     def setUp(self):
         self.random_vector = np.random.rand(int(np.random.rand() * 10.0 + 1))
-        self.random_matrix = np.random.rand(int(np.random.rand() * 10.0 + 2),
-                                            int(np.random.rand() * 10.0 + 2))
+        self.random_matrix = np.random.rand(
+            int(np.random.rand() * 10.0 + 2), int(np.random.rand() * 10.0 + 2)
+        )
 
     def tearDown(self):
         pass
@@ -48,5 +49,5 @@ class TestMessages(unittest.TestCase):
         self.assertEqual(m.width, width)
 
 
-if __name__ == '__main__':
-    rostest.rosrun('dynamic_graph_bridge_msgs', 'test_msg', TestMessages)
+if __name__ == "__main__":
+    rostest.rosrun("dynamic_graph_bridge_msgs", "test_msg", TestMessages)
