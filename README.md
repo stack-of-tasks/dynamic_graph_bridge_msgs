@@ -1,10 +1,13 @@
 # Dynamic Graph Bridge MSGS
+
 [![Pipeline status](https://gitlab.laas.fr/stack-of-tasks/dynamic_graph_bridge_msgs/badges/master/pipeline.svg)](https://gitlab.laas.fr/stack-of-tasks/dynamic_graph_bridge_msgs/commits/master)
-[![Coverage report](https://gitlab.laas.fr/stack-of-tasks/dynamic_graph_bridge_msgs/badges/master/coverage.svg?job=doc-coverage)](http://projects.laas.fr/gepetto/doc/stack-of-tasks/dynamic_graph_bridge_msgs/master/coverage/)
+[![Coverage report](https://gitlab.laas.fr/stack-of-tasks/dynamic_graph_bridge_msgs/badges/master/coverage.svg?job=doc-coverage)](https://gepettoweb.laas.fr/doc/stack-of-tasks/dynamic_graph_bridge_msgs/master/coverage/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/stack-of-tasks/dynamic_graph_bridge_msgs/master.svg)](https://results.pre-commit.ci/latest/github/stack-of-tasks/dynamic_graph_bridge_msgs)
 
 This packages provides the ROS1/2 messages and services for the user interface
 of the
-[SoT](https://stack-of-tasks.github.io/sot-doc/doxygen/HEAD/page_overview.html) 
+[SoT](https://stack-of-tasks.github.io/sot-doc/doxygen/HEAD/page_overview.html)
 framework.
 
 The current messages are:

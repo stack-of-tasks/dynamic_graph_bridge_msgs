@@ -27,8 +27,8 @@
 
   <member_of_group condition="$ROS_VERSION == 2">rosidl_interface_packages</member_of_group>
 
-  <test_depend condition="$ROS_VERSION == 1">rospy</test_depend>  
-  <test_depend condition="$ROS_VERSION == 2">rclpy</test_depend>  
+  <test_depend condition="$ROS_VERSION == 1">rospy</test_depend>
+  <test_depend condition="$ROS_VERSION == 2">rclpy</test_depend>
 
   <export>
     <rosdoc config="rosdoc.yaml" />

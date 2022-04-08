@@ -15,8 +15,10 @@ from rclpy.node import Node
 import launch
 import launch_ros
 import launch_ros.actions
+
 try:
     import launch_testing.actions
+
     is_launch_testing = True
 except ImportError:
     is_launch_testing = False
@@ -33,61 +35,61 @@ if is_launch_testing:
     @pytest.mark.rostest
     def generate_test_description():
         # Normally, talker publishes on the 'chatter' topic and listener listens on the
-        # 'chatter' topic, but we want to show how to use remappings to munge the data so we
-        # will remap these topics when we launch the nodes and insert our own node that can
-        # change the data as it passes through
+        # 'chatter' topic, but we want to show how to use remappings to munge the data
+        # so we will remap these topics when we launch the nodes and insert our own node
+        # that can change the data as it passes through
         path_to_test = Path(__file__).resolve().parent
 
         server_node = launch_ros.actions.Node(
             executable=sys.executable,
-            arguments=[str(path_to_test / 'unit_test_node.py')],
-            additional_env={'PYTHONUNBUFFERED': '1'}
+            arguments=[str(path_to_test / "unit_test_node.py")],
+            additional_env={"PYTHONUNBUFFERED": "1"},
         )
         return (
-            launch.LaunchDescription([
-                server_node,
-                # Start tests right away - no need to wait for anything
-                launch_testing.actions.ReadyToTest(),
-            ]),
-            {
-                'python_server_node': server_node
-            },
+            launch.LaunchDescription(
+                [
+                    server_node,
+                    # Start tests right away - no need to wait for anything
+                    launch_testing.actions.ReadyToTest(),
+                ]
+            ),
+            {"python_server_node": server_node},
         )
 
-else: # is_launch_testing
+else:  # is_launch_testing
 
     @pytest.mark.rostest
     def generate_test_description(ready_fn):
         # Normally, talker publishes on the 'chatter' topic and listener listens on the
-        # 'chatter' topic, but we want to show how to use remappings to munge the data so we
-        # will remap these topics when we launch the nodes and insert our own node that can
-        # change the data as it passes through
+        # 'chatter' topic, but we want to show how to use remappings to munge the data
+        # so we will remap these topics when we launch the nodes and insert our own node
+        # that can change the data as it passes through
         path_to_test = Path(__file__).resolve().parent
 
         server_node = launch_ros.actions.Node(
             executable=sys.executable,
-            arguments=[str(path_to_test / 'unit_test_node.py')],
-            additional_env={'PYTHONUNBUFFERED': '1'}
+            arguments=[str(path_to_test / "unit_test_node.py")],
+            additional_env={"PYTHONUNBUFFERED": "1"},
         )
         return (
-            launch.LaunchDescription([
-                server_node,
-                # Start tests right away - no need to wait for anything in this example
-                launch.actions.OpaqueFunction(function=lambda context: ready_fn()),
-            ]),
-            {
-                'python_server_node': server_node
-            },
+            launch.LaunchDescription(
+                [
+                    server_node,
+                    # Start tests right away
+                    # No need to wait for anything in this example
+                    launch.actions.OpaqueFunction(function=lambda context: ready_fn()),
+                ]
+            ),
+            {"python_server_node": server_node},
         )
 
 
 class RunPythonCommandClient(Node):
-
     def __init__(self):
-        super().__init__('run_python_command_client_node')
-        self.cli = self.create_client(RunPythonCommand, 'run_python_command')
+        super().__init__("run_python_command_client_node")
+        self.cli = self.create_client(RunPythonCommand, "run_python_command")
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
+            self.get_logger().info("service not available, waiting again...")
         self.req = RunPythonCommand.Request()
 
     def send_request(self):
@@ -96,12 +98,11 @@ class RunPythonCommandClient(Node):
 
 
 class RunCommandClient(Node):
-
     def __init__(self):
-        super().__init__('run_command_client_node')
-        self.cli = self.create_client(RunCommand, 'run_command')
+        super().__init__("run_command_client_node")
+        self.cli = self.create_client(RunCommand, "run_command")
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
+            self.get_logger().info("service not available, waiting again...")
         self.req = RunCommand.Request()
 
     def send_request(self):
@@ -110,12 +111,11 @@ class RunCommandClient(Node):
 
 
 class RunPythonFileClient(Node):
-
     def __init__(self):
-        super().__init__('run_python_file_client_node')
-        self.cli = self.create_client(RunPythonFile, 'run_python_file')
+        super().__init__("run_python_file_client_node")
+        self.cli = self.create_client(RunPythonFile, "run_python_file")
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
+            self.get_logger().info("service not available, waiting again...")
         self.req = RunPythonFile.Request()
 
     def send_good_request(self):
@@ -154,17 +154,16 @@ class TestPythonServices(unittest.TestCase):
                 try:
                     response = client.future.result()
                 except Exception as e:
-                    client.get_logger().info(
-                        'Service call failed %r' % (e,))
+                    client.get_logger().info("Service call failed %r" % (e,))
                 else:
-                    client.get_logger().info('Result acquired')
+                    client.get_logger().info("Result acquired")
                 break
 
         self.assertEqual(client.req.input, "1+1")
         self.assertEqual(response.result, "1+1_result_python_cmd")
         self.assertEqual(response.standardoutput, "standardoutput")
         self.assertEqual(response.standarderror, "standarderror")
-        
+
         client.destroy_node()
 
     def test_run_command(self):
@@ -177,10 +176,9 @@ class TestPythonServices(unittest.TestCase):
                 try:
                     response = client.future.result()
                 except Exception as e:
-                    client.get_logger().info(
-                        'Service call failed %r' % (e,))
+                    client.get_logger().info("Service call failed %r" % (e,))
                 else:
-                    client.get_logger().info('Result acquired')
+                    client.get_logger().info("Result acquired")
                 break
 
         self.assertEqual(client.req.input, "1+1")
@@ -200,10 +198,9 @@ class TestPythonServices(unittest.TestCase):
                 try:
                     response = client.future.result()
                 except Exception as e:
-                    client.get_logger().info(
-                        'Service call failed %r' % (e,))
+                    client.get_logger().info("Service call failed %r" % (e,))
                 else:
-                    client.get_logger().info('Result acquired')
+                    client.get_logger().info("Result acquired")
                 break
 
         self.assertEqual(client.req.input, str(Path(__file__)))
@@ -221,10 +218,9 @@ class TestPythonServices(unittest.TestCase):
                 try:
                     response = client.future.result()
                 except Exception as e:
-                    client.get_logger().info(
-                        'Service call failed %r' % (e,))
+                    client.get_logger().info("Service call failed %r" % (e,))
                 else:
-                    client.get_logger().info('Result acquired')
+                    client.get_logger().info("Result acquired")
                 break
 
         self.assertEqual(client.req.input, "hthre21@#$%@)#_#%*+($^&$i;gnvj;bae")
