@@ -34,6 +34,8 @@ if(ROS_VERSION EQUAL 1) # if ROS1
   generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
 
   add_library(${PROJECT_NAME} INTERFACE)
+  target_include_directories(${PROJECT_NAME}
+                             INTERFACE $<INSTALL_INTERFACE:include>)
 
   install(
     TARGETS ${PROJECT_NAME}
