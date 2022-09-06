@@ -17,7 +17,7 @@ if(ROS_VERSION EQUAL 1) # if ROS1
   set(PROJECT_USE_CMAKE_EXPORT TRUE)
   include(cmake/base.cmake)
 
-  COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX C)
+  compute_project_args(PROJECT_ARGS LANGUAGES CXX C)
   project(${PROJECT_NAME} ${PROJECT_ARGS})
 
   # Declare build dependencies
@@ -27,17 +27,18 @@ if(ROS_VERSION EQUAL 1) # if ROS1
   add_message_files(DIRECTORY msg FILES Matrix.msg Vector.msg)
 
   # Add service files
-  add_service_files(
-      DIRECTORY srv
-      FILES RunCommand.srv RunPythonCommand.srv RunPythonFile.srv
-  )
+  add_service_files(DIRECTORY srv FILES RunCommand.srv RunPythonCommand.srv
+                    RunPythonFile.srv)
 
   # And now generate the messages
   generate_messages(DEPENDENCIES ${MESSAGE_DEPENDENCIES})
 
   add_library(${PROJECT_NAME} INTERFACE)
 
-  install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
+  install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${TARGETS_EXPORT_NAME}
+    DESTINATION lib)
 
 else() # if ROS2
   # Here ament is doing things ok.
@@ -46,13 +47,9 @@ else() # if ROS2
   find_package(ament_cmake REQUIRED)
   find_package(ament_cmake_python REQUIRED)
   find_package(rosidl_default_generators REQUIRED)
-  rosidl_generate_interfaces(${PROJECT_NAME}
-    "msg/Matrix.msg"
-    "msg/Vector.msg"
-    "srv/RunCommand.srv"
-    "srv/RunPythonCommand.srv"
-    "srv/RunPythonFile.srv"
-  )
+  rosidl_generate_interfaces(
+    ${PROJECT_NAME} "msg/Matrix.msg" "msg/Vector.msg" "srv/RunCommand.srv"
+    "srv/RunPythonCommand.srv" "srv/RunPythonFile.srv")
   ament_export_dependencies(rosidl_default_runtime)
   ament_package()
 endif()
